@@ -110,6 +110,9 @@ def _output(obj, output, config, **extra):
         elif config.Store_json:
             write.Json(obj, config)
             logme.debug(__name__ + ':_output:JSON')
+        elif config.Store_parquet:
+            write.Parquet(obj, config)
+            logme.debug(__name__ + ':_output:Parquet')
         else:
             write.Text(output, config.Output)
             logme.debug(__name__ + ':_output:Text')
