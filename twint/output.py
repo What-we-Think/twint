@@ -124,10 +124,18 @@ def _output(obj, output, config, **extra):
         if not config.Hide_output:
             try:
                 print(output.replace('\n', ' '))
+                date_str = output.split()[1:3] #convert to datetime
+                date_str = ' '.join(date_str)
+                date_str = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+                if config.Since and config.Until:
+                    since = datetime.strptime(config.Since, '%Y-%m-%d %H:%M:%S')
+                    until = datetime.strptime(config.Until, '%Y-%m-%d %H:%M:%S')
+
+                    if date_str > since and date_str < until:
+                        return 
             except UnicodeEncodeError:
                 logme.critical(__name__ + ':_output:UnicodeEncodeError')
                 print("unicode error [x] output._output")
-
 
 async def checkData(tweet, config, conn):
     logme.debug(__name__ + ':checkData')
